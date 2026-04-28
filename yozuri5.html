@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yozuri Philippines Personalized Nutrition Planner</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
+        .slide-in { animation: slideIn 0.3s ease-out forwards; }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        /* Print Styles */
+        @media print {
+            body { background-color: #ffffff; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .shadow-sm, .shadow-md, .shadow-lg { box-shadow: none !important; }
+            @page { margin: 1cm; }
+        }
+    </style>
+</head>
+<body class="text-gray-800 antialiased min-h-screen flex flex-col">
+
+    <header class="bg-emerald-700 text-white shadow-md sticky top-0 z-10 print:static print:shadow-none">
+        <div class="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8 flex items-center gap-3">
+            <i data-lucide="activity" class="w-8 h-8"></i>
+            <div>
+                <h1 class="text-xl font-bold leading-tight">Yozuri Philippines Personalized Nutrition Planner</h1>
+                <p class="text-sm text-emerald-100">Made by Kenneth Roy Ocampo, RN 2026</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8 w-full grid grid-cols-1 lg:grid-cols-12 gap-8 print:block print:py-4">
+        
+        <!-- INPUT SECTION -->
+        <section class="lg:col-span-5 space-y-6 print:hidden">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                <h2 class="text-lg font-semibold border-b pb-2 mb-4 text-gray-700 flex items-center gap-2">
+                    <i data-lucide="user" class="w-5 h-5 text-emerald-600"></i> A. Personal Data
+                </h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="sm:col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Name</label>
+                        <input type="text" id="name" class="w-full rounded-lg border-gray-300 border p-2.5 focus:ring-emerald-500 focus:border-emerald-500 outline-none" placeholder="Juan Dela Cruz">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Age (years)</label>
+                        <input type="number" id="age" min="15" max="100" class="w-full rounded-lg border-gray-300 border p-2.5 outline-none focus:border-emerald-500" placeholder="30">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Gender</label>
+                        <select id="gender" class="w-full rounded-lg border-gray-300 border p-2.5 outline-none focus:border-emerald-500 bg-white">
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Height (cm)</label>
+                        <input type="number" id="height" min="100" max="250" class="w-full rounded-lg border-gray-300 border p-2.5 outline-none focus:border-emerald-500" placeholder="165">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Current Weight (kg)</label>
+                        <input type="number" id="weight" min="30" max="300" class="w-full rounded-lg border-gray-300 border p-2.5 outline-none focus:border-emerald-500" placeholder="70">
+                    </div>
+                    <div class="sm:col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Physical Activity Level</label>
+                        <select id="activity" class="w-full rounded-lg border-gray-300 border p-2.5 outline-none focus:border-emerald-500 bg-white">
+                            <option value="1.2">Sedentary (Little to no exercise)</option>
+                            <option value="1.375">Lightly Active (Exercise 1-3 days/wk)</option>
+                            <option value="1.55">Moderately Active (Exercise 3-5 days/wk)</option>
+                            <option value="1.725">Very Active (Hard exercise 6-7 days/wk)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                <h2 class="text-lg font-semibold border-b pb-2 mb-4 text-gray-700 flex items-center gap-2">
+                    <i data-lucide="target" class="w-5 h-5 text-emerald-600"></i> B. Goal & Targeting
+                </h2>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Primary Goal</label>
+                        <select id="goal" class="w-full rounded-lg border-gray-300 border p-2.5 outline-none focus:border-emerald-500 bg-white">
+                            <option value="maintenance">Maintenance</option>
+                            <option value="loss">Weight Loss (-0.5 kg/wk)</option>
+                            <option value="aggressive_loss">Aggressive Weight Loss (-1.0 kg/wk)</option>
+                            <option value="gain">Weight Gain (+0.25 kg/wk)</option>
+                            <option value="aggressive_gain">Aggressive Weight Gain (+0.5 kg/wk)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Target Weight (kg)</label>
+                        <input type="number" id="targetWeight" min="30" max="300" class="w-full rounded-lg border-gray-300 border p-2.5 outline-none focus:border-emerald-500" placeholder="65">
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                <h2 class="text-lg font-semibold border-b pb-2 mb-4 text-gray-700 flex items-center gap-2">
+                    <i data-lucide="stethoscope" class="w-5 h-5 text-emerald-600"></i> C. Health Conditions (Pentad)
+                </h2>
+                <p class="text-xs text-gray-500 mb-3">Check all that apply. This adjusts macronutrient partitioning and food selection.</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <label class="flex items-center space-x-3 cursor-pointer">
+                        <input type="checkbox" id="cond_htn" class="form-checkbox h-5 w-5 text-emerald-600 rounded border-gray-300">
+                        <span class="text-sm font-medium text-gray-700">Hypertensive</span>
+                    </label>
+                    <label class="flex items-center space-x-3 cursor-pointer">
+                        <input type="checkbox" id="cond_dm" class="form-checkbox h-5 w-5 text-emerald-600 rounded border-gray-300">
+                        <span class="text-sm font-medium text-gray-700">Diabetic (Type 2)</span>
+                    </label>
+                    <label class="flex items-center space-x-3 cursor-pointer">
+                        <input type="checkbox" id="cond_pcos" class="form-checkbox h-5 w-5 text-emerald-600 rounded border-gray-300">
+                        <span class="text-sm font-medium text-gray-700">PCOS</span>
+                    </label>
+                    <label class="flex items-center space-x-3 cursor-pointer">
+                        <input type="checkbox" id="cond_uric" class="form-checkbox h-5 w-5 text-emerald-600 rounded border-gray-300">
+                        <span class="text-sm font-medium text-gray-700">Elevated Uric Acid</span>
+                    </label>
+                    <label class="flex items-center space-x-3 cursor-pointer sm:col-span-2">
+                        <input type="checkbox" id="cond_chol" class="form-checkbox h-5 w-5 text-emerald-600 rounded border-gray-300">
+                        <span class="text-sm font-medium text-gray-700">Elevated Blood Cholesterol</span>
+                    </label>
+                </div>
+            </div>
+
+            <button onclick="calculateProfile()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl shadow-lg transition duration-200 flex justify-center items-center gap-2">
+                <i data-lucide="calculator" class="w-5 h-5"></i> Generate Clinical Protocol
+            </button>
+            
+            <div id="errorBox" class="hidden bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg relative" role="alert">
+                <strong class="font-bold">Error!</strong>
+                <span class="block sm:inline" id="errorMessage"></span>
+            </div>
+        </section>
+
+        <!-- OUTPUT SECTION -->
+        <section id="resultsSection" class="lg:col-span-7 space-y-6 hidden slide-in print:block print:w-full print:col-span-12">
+            
+            <!-- Web Action Bar -->
+            <div id="actionBar" class="flex justify-between items-center print:hidden bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                <h2 class="text-lg font-bold text-gray-800 flex items-center gap-2">
+                    <i data-lucide="check-circle" class="w-5 h-5 text-emerald-600"></i> Plan Generated
+                </h2>
+                <div class="flex gap-2 text-sm font-medium">
+                    <button onclick="saveToFile()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors shadow-sm">
+                        <i data-lucide="download" class="w-4 h-4"></i> Save File
+                    </button>
+                    <button onclick="printReport()" class="bg-gray-800 hover:bg-gray-900 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors shadow-sm">
+                        <i data-lucide="printer" class="w-4 h-4"></i> Print Report
+                    </button>
+                </div>
+            </div>
+
+            <!-- Print Header Summary -->
+            <div id="printPatientInfo" class="hidden print:block mb-6 border-b-2 border-emerald-600 pb-4">
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">Nutrition Protocol & Metabolic Profile</h2>
+                <p class="text-gray-700 text-sm mt-2"><strong>Patient Name:</strong> <span id="resName">--</span></p>
+                <div class="grid grid-cols-3 gap-2 mt-2 text-sm text-gray-600">
+                    <p><strong>Age:</strong> <span id="resAge">--</span></p>
+                    <p><strong>Gender:</strong> <span id="resGender">--</span></p>
+                    <p><strong>Height:</strong> <span id="resHeight">--</span> cm</p>
+                    <p><strong>Current Weight:</strong> <span id="resWeight">--</span> kg</p>
+                    <p><strong>Target Weight:</strong> <span id="resTargetW">--</span> kg</p>
+                </div>
+            </div>
+
+            <!-- Warnings -->
+            <div id="warningBox" class="hidden bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-lg shadow-sm print:break-inside-avoid">
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <i data-lucide="alert-triangle" class="h-5 w-5 text-yellow-400"></i>
+                    </div>
+                    <div class="ml-3">
+                        <h3 class="text-sm font-medium text-yellow-800">Clinical Warnings</h3>
+                        <div class="mt-2 text-sm text-yellow-700">
+                            <ul id="warningList" class="list-disc pl-5 space-y-1"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bioenergetics Dashboard -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 print:break-inside-avoid print:border-gray-200">
+                <h2 class="text-lg font-semibold border-b pb-2 mb-4 text-gray-700">Metabolic Profile</h2>
+                
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+                    <div class="bg-gray-50 p-4 rounded-lg text-center border border-gray-100">
+                        <p class="text-xs text-gray-500 uppercase font-semibold">BMI</p>
+                        <p class="text-2xl font-bold text-gray-800" id="resBMI">--</p>
+                        <p class="text-xs font-medium mt-1" id="resBMICat">--</p>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg text-center border border-gray-100">
+                        <p class="text-xs text-gray-500 uppercase font-semibold">BMR / RMR</p>
+                        <p class="text-2xl font-bold text-gray-800" id="resBMR">--</p>
+                        <p class="text-xs text-gray-500 mt-1">kcal/day</p>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg text-center border border-gray-100">
+                        <p class="text-xs text-gray-500 uppercase font-semibold">Maint. TDEE</p>
+                        <p class="text-2xl font-bold text-gray-800" id="resTDEE">--</p>
+                        <p class="text-xs text-gray-500 mt-1">kcal/day</p>
+                    </div>
+                    <div class="bg-emerald-50 p-4 rounded-lg text-center border border-emerald-200">
+                        <p class="text-xs text-emerald-600 uppercase font-bold">Target Intake</p>
+                        <p class="text-2xl font-bold text-emerald-700" id="resTarget">--</p>
+                        <p class="text-xs text-emerald-600 mt-1">kcal/day</p>
+                    </div>
+                </div>
+
+                <div class="bg-blue-50 border border-blue-100 rounded-lg p-4 flex items-center gap-4">
+                    <div class="bg-blue-100 p-3 rounded-full text-blue-600">
+                        <i data-lucide="calendar-check" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm text-blue-800 font-medium">Estimated Goal Achievement</p>
+                        <p class="text-lg font-bold text-blue-900" id="resDate">--</p>
+                        <p class="text-xs text-blue-700" id="resPace">Based on current caloric adjustments.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Macronutrient Partitioning -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 print:break-inside-avoid print:border-gray-200">
+                <h2 class="text-lg font-semibold border-b pb-2 mb-4 text-gray-700">Prescribed Macronutrient Partitioning</h2>
+                <p class="text-sm text-gray-600 mb-4" id="resDietDesc">--</p>
+                
+                <div class="space-y-4">
+                    <div>
+                        <div class="flex justify-between text-sm font-medium mb-1">
+                            <span class="text-amber-600">Carbohydrates (<span id="pctC"></span>%)</span>
+                            <span class="text-gray-800"><span id="gramC"></span>g</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                            <div class="bg-amber-500 h-2.5 rounded-full" id="barC" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-sm font-medium mb-1">
+                            <span class="text-red-500">Protein (<span id="pctP"></span>%)</span>
+                            <span class="text-gray-800"><span id="gramP"></span>g</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                            <div class="bg-red-500 h-2.5 rounded-full" id="barP" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-sm font-medium mb-1">
+                            <span class="text-blue-500">Fats (<span id="pctF"></span>%)</span>
+                            <span class="text-gray-800"><span id="gramF"></span>g</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                            <div class="bg-blue-500 h-2.5 rounded-full" id="barF" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-6 p-4 bg-gray-50 rounded-lg border border-gray-200 text-sm" id="conditionSpecificAdvice">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <!-- Filipino Meal Plan -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 print:break-inside-avoid print:border-gray-200">
+                <h2 class="text-lg font-semibold border-b pb-2 mb-4 text-gray-700 flex justify-between items-center">
+                    <span>Clinical Filipino Meal Plan</span>
+                    <span class="text-xs font-normal text-emerald-600 bg-emerald-50 px-2 py-1 rounded border border-emerald-100">Scaled to Target Calories</span>
+                </h2>
+                
+                <div class="space-y-4" id="mealPlanContainer">
+                    <!-- Meals injected here via JS -->
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        function showError(msg) {
+            const eb = document.getElementById('errorBox');
+            document.getElementById('errorMessage').innerText = msg;
+            eb.classList.remove('hidden');
+            document.getElementById('resultsSection').classList.add('hidden');
+        }
+
+        function hideError() {
+            document.getElementById('errorBox').classList.add('hidden');
+        }
+
+        function calculateProfile() {
+            hideError();
+            
+            // 1. Gather Inputs
+            const name = document.getElementById('name').value;
+            const age = parseInt(document.getElementById('age').value);
+            const gender = document.getElementById('gender').value;
+            const height = parseFloat(document.getElementById('height').value);
+            const weight = parseFloat(document.getElementById('weight').value);
+            const activity = parseFloat(document.getElementById('activity').value);
+            const goal = document.getElementById('goal').value;
+            let targetWeight = parseFloat(document.getElementById('targetWeight').value);
+
+            // Validation
+            if(!age || !height || !weight || !targetWeight) {
+                showError("Please fill out all numeric fields (Age, Height, Weight, Target Weight).");
+                return;
+            }
+            if(height < 100 || weight < 30) {
+                showError("Please enter valid height and weight measurements.");
+                return;
+            }
+
+            // Health Conditions
+            const c_htn = document.getElementById('cond_htn').checked;
+            const c_dm = document.getElementById('cond_dm').checked;
+            const c_pcos = document.getElementById('cond_pcos').checked;
+            const c_uric = document.getElementById('cond_uric').checked;
+            const c_chol = document.getElementById('cond_chol').checked;
+
+            const isLowCarbNeed = c_dm || c_pcos;
+            const isLowPurineNeed = c_uric;
+            const isHeartHealthyNeed = c_htn || c_chol;
+
+            // 2. BMI Calculation
+            const heightM = height / 100;
+            const bmi = weight / (heightM * heightM);
+            let bmiCat = "";
+            let bmiColor = "";
+            if(bmi < 18.5) { bmiCat = "Underweight"; bmiColor = "text-blue-500"; }
+            else if(bmi < 25) { bmiCat = "Normal"; bmiColor = "text-emerald-500"; }
+            else if(bmi < 30) { bmiCat = "Overweight"; bmiColor = "text-yellow-600"; }
+            else { bmiCat = "Obese"; bmiColor = "text-red-500"; }
+
+            // 3. Adjusted Body Weight (ABW) if Obese
+            let calcWeight = weight;
+            if(bmi >= 30) {
+                const idealBMI = 22;
+                const ibw = idealBMI * (heightM * heightM);
+                const excess = weight - ibw;
+                calcWeight = ibw + (0.25 * excess); // Clinical guideline for significant obesity
+            }
+
+            // 4. BMR (Mifflin-St Jeor)
+            let bmr = (10 * calcWeight) + (6.25 * height) - (5 * age);
+            bmr += (gender === 'male') ? 5 : -161;
+
+            // 5. TDEE
+            const tdee = bmr * activity;
+
+            // 6. Goal & Targeting Check
+            let targetCals = tdee;
+            let dailyModifier = 0;
+            let weightDiff = targetWeight - weight; // negative if loss, positive if gain
+            let warnings = [];
+
+            // Goal Logic Validation
+            if((goal.includes('loss') && targetWeight >= weight) || (goal.includes('gain') && targetWeight <= weight)) {
+                showError("Goal direction and Target Weight mismatch. E.g., If loss, target must be lower than current weight.");
+                return;
+            }
+
+            // Target BMI Check
+            const targetBMI = targetWeight / (heightM * heightM);
+            if(targetBMI < 18.5) {
+                warnings.push("Your target weight puts you in the clinical 'Underweight' category (BMI < 18.5).");
+            }
+
+            switch(goal) {
+                case 'maintenance': dailyModifier = 0; break;
+                case 'loss': dailyModifier = -500; break; // ~0.5kg week
+                case 'aggressive_loss': 
+                    dailyModifier = -1000; 
+                    warnings.push("Aggressive Weight Loss (> 0.5kg - 1kg/week) increases risk of gallstones, muscle wasting, and metabolic adaptation. Medical supervision advised.");
+                    break;
+                case 'gain': dailyModifier = +350; break; // ~0.3kg week (lean bulk)
+                case 'aggressive_gain': 
+                    dailyModifier = +750; 
+                    warnings.push("Aggressive Weight Gain predominantly increases visceral and subcutaneous fat mass rather than lean muscle. Control surplus to +300-500 kcal.");
+                    break;
+            }
+
+            targetCals += dailyModifier;
+
+            // Clinical Safety Floors
+            if(gender === 'female' && targetCals < 1200) {
+                targetCals = 1200;
+                warnings.push("Caloric target increased to 1200 kcal/day. Dropping below this causes severe nutrient deficiencies and hormonal disruption.");
+            } else if (gender === 'male' && targetCals < 1500) {
+                targetCals = 1500;
+                warnings.push("Caloric target increased to 1500 kcal/day to preserve basal metabolic function and lean mass.");
+            }
+
+            // Recalculate daily modifier based on safety floor
+            const actualModifier = targetCals - tdee;
+
+            // 7. Time to Goal Calculation
+            // 1kg fat roughly = 7700 kcal
+            let daysToGoal = 0;
+            let dateText = "Maintained";
+            let paceText = "N/A";
+
+            if (actualModifier !== 0 && targetWeight !== weight) {
+                const totalKcalDiff = Math.abs(targetWeight - weight) * 7700;
+                daysToGoal = totalKcalDiff / Math.abs(actualModifier);
+                
+                const targetDate = new Date();
+                targetDate.setDate(targetDate.getDate() + daysToGoal);
+                
+                dateText = targetDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+                
+                let weeklyPace = (Math.abs(actualModifier) * 7) / 7700;
+                paceText = `At a rate of ${weeklyPace.toFixed(2)} kg per week.`;
+            } else if (goal === 'maintenance' && weightDiff !== 0) {
+                 warnings.push("You selected Maintenance but have a different target weight. Adjusting to current weight for maintenance.");
+                 targetWeight = weight; // Fix logical error
+                 document.getElementById('targetWeight').value = weight;
+            }
+
+            // 8. Macronutrient Partitioning
+            let pctC, pctP, pctF;
+            let dietName = "";
+
+            if (isLowCarbNeed) {
+                // Clinical Low Carb for Diabetic/PCOS
+                pctC = 35; pctP = 30; pctF = 35;
+                dietName = "Therapeutic Low-Carbohydrate Pattern";
+            } else {
+                // Standard balanced
+                pctC = 45; pctP = 25; pctF = 30;
+                dietName = "Balanced Macronutrient Pattern";
+            }
+
+            // Adjust for aggressive goal (preserve muscle)
+            if(goal.includes('loss') && !isLowCarbNeed) {
+                pctC = 40; pctP = 35; pctF = 25; // Higher protein for muscle retention
+                dietName = "High-Protein / Moderate-Carb Pattern (Loss)";
+            }
+
+            const gramC = Math.round((targetCals * (pctC / 100)) / 4);
+            const gramP = Math.round((targetCals * (pctP / 100)) / 4);
+            const gramF = Math.round((targetCals * (pctF / 100)) / 9);
+
+            // 9. Specific Dietary Advice Based on Pentad
+            let adviceHtml = "<ul class='list-disc pl-4 space-y-2 text-gray-700'>";
+            if(c_htn) adviceHtml += "<li><strong>Hypertension:</strong> Strict sodium limit < 1,500mg. Maximize potassium from Kangkong, Spinach, and Tomatoes. Avoid 'Patis' and 'Bagoong'.</li>";
+            if(c_dm) adviceHtml += "<li><strong>Diabetes:</strong> Carbohydrates restricted to complex, fiber-rich sources (Ampalaya, Brown Rice). Avoid all refined sugar and white rice to control insulin spikes.</li>";
+            if(c_pcos) adviceHtml += "<li><strong>PCOS:</strong> Focus on anti-inflammatory omega-3s (Bangus, Tilapia) and high fiber. The assigned low-carb framework directly targets insulin resistance driving androgen excess.</li>";
+            if(c_uric) adviceHtml += "<li><strong>Hyperuricemia:</strong> Avoid organ meats (atay, bato), sardines, and high-fructose corn syrup. Moderate plant purines (monggo) are acceptable. Ensure adequate hydration.</li>";
+            if(c_chol) adviceHtml += "<li><strong>Hypercholesterolemia:</strong> Replace saturated fats (pork belly, coconut cream) with poly/monounsaturated fats (olive oil, fish). Increase soluble fiber intake (Okra, Oats).</li>";
+            if(!c_htn && !c_dm && !c_pcos && !c_uric && !c_chol) {
+                adviceHtml += "<li>Maintain a balanced intake rich in indigenous Filipino vegetables, lean proteins, and stay hydrated.</li>";
+            }
+            adviceHtml += "</ul>";
+
+            // 10. Generate Filipino Meal Plan (Scaled to target)
+            // Fractions of daily calories: Breakfast 25%, Lunch 35%, Dinner 30%, Snack 10%
+            
+            // Helper functions to convert calculated macro grams to real-world serving estimates
+            const calcRice = (carbs) => Math.max(0.2, (carbs / 45)).toFixed(1); // ~45g carbs per cup of cooked rice
+            const calcMeat = (pro) => Math.max(30, Math.round((pro / 25) * 100)); // ~25g protein per 100g of meat/fish
+            const calcEggs = (pro) => Math.max(1, Math.round(pro / 6)); // ~6g protein per large egg
+            const calcBread = (carbs) => Math.max(1, Math.round(carbs / 15)); // ~15g carbs per slice of bread
+            const calcNuts = (fats) => Math.max(10, Math.round((fats / 14) * 28)); // ~14g fat per 28g (1 oz) of nuts
+
+            // Dynamic goal-based food recommendations
+            let volumeAddOn = "";
+            let snackGoalRec = "";
+            if (goal.includes('loss')) {
+                volumeAddOn = " + 1.5 to 2 cups of fibrous green vegetables (low-calorie volume filler to keep you full)";
+                snackGoalRec = " + 2 glasses of water (hydration aids weight loss)";
+            } else if (goal.includes('gain')) {
+                volumeAddOn = " + 1 tbsp extra virgin olive oil or butter added to the meal (calorie booster)";
+                snackGoalRec = " + 1 glass of whole milk or protein shake";
+            } else {
+                volumeAddOn = " + 1 cup of standard vegetables";
+                snackGoalRec = "";
+            }
+
+            const meals = [
+                { 
+                    name: "Breakfast", 
+                    pct: 0.25,
+                    dish: c_htn || c_chol 
+                        ? `Tortang Talong made with ${calcEggs(gramP * 0.25)} Egg Whites and 1 Eggplant (minimal oil)`
+                        : `Tortang Talong made with ${calcEggs(gramP * 0.25)} Whole Eggs and 1 Eggplant`,
+                    carbSource: isLowCarbNeed 
+                        ? `${calcRice(gramC * 0.25)} cups Cauliflower Rice or ${calcBread(gramC * 0.25)} slices Low-Carb Bread` 
+                        : `${calcRice(gramC * 0.25)} cups Brown Rice or ${calcBread(gramC * 0.25)} slices Whole Wheat Bread`
+                },
+                {
+                    name: "Lunch",
+                    pct: 0.35,
+                    dish: c_uric 
+                        ? `${calcMeat(gramP * 0.35)}g Sinigang na Bangus or Hipon ${volumeAddOn}`
+                        : `${calcMeat(gramP * 0.35)}g Sinigang na Baboy (Lean cuts) or Chicken ${volumeAddOn}`,
+                    carbSource: isLowCarbNeed 
+                        ? `${calcRice(gramC * 0.35)} cups Adlai or Shirataki Rice` 
+                        : `${calcRice(gramC * 0.35)} cups Brown/Red Rice`
+                },
+                {
+                    name: "Dinner",
+                    pct: 0.30,
+                    dish: c_chol 
+                        ? `${calcMeat(gramP * 0.30)}g Grilled Tilapia or Tuna + Ginisang Ampalaya (no pork) ${volumeAddOn}`
+                        : `${calcMeat(gramP * 0.30)}g Skinless Chicken Tinola or Adobo ${volumeAddOn}`,
+                    carbSource: isLowCarbNeed 
+                        ? `${calcRice(gramC * 0.30)} cups Cauliflower Rice` 
+                        : `${calcRice(gramC * 0.30)} cups Brown Rice`
+                },
+                {
+                    name: "Snack",
+                    pct: 0.10,
+                    dish: c_dm || c_pcos 
+                        ? `${calcNuts(gramF * 0.10)}g Almonds/Walnuts + 1 cup Unsweetened Green Tea ${snackGoalRec}` 
+                        : `1 Medium Fruit (Apple/Banana) + ${calcEggs(gramP * 0.10)} Boiled Egg(s) ${snackGoalRec}`
+                }
+            ];
+
+            let mealHtml = "";
+            meals.forEach(m => {
+                const mCals = Math.round(targetCals * m.pct);
+                const mC = Math.round(gramC * m.pct);
+                const mP = Math.round(gramP * m.pct);
+                const mF = Math.round(gramF * m.pct);
+
+                mealHtml += `
+                <div class="border border-gray-100 rounded-lg p-4 bg-gray-50 flex flex-col md:flex-row md:items-center justify-between gap-4 print:break-inside-avoid print:border-gray-300">
+                    <div class="flex-1">
+                        <h4 class="font-bold text-gray-800">${m.name} <span class="text-xs font-normal text-gray-500 ml-2">${mCals} kcal</span></h4>
+                        <p class="text-sm text-gray-700 mt-1"><span class="font-medium text-emerald-700">Main:</span> ${m.dish}</p>
+                        ${m.carbSource ? `<p class="text-sm text-gray-700"><span class="font-medium text-amber-600">Side:</span> ${m.carbSource}</p>` : ''}
+                    </div>
+                    <div class="flex gap-3 text-xs font-medium shrink-0">
+                        <div class="bg-amber-100 text-amber-800 px-2 py-1 rounded">C: ${mC}g</div>
+                        <div class="bg-red-100 text-red-800 px-2 py-1 rounded">P: ${mP}g</div>
+                        <div class="bg-blue-100 text-blue-800 px-2 py-1 rounded">F: ${mF}g</div>
+                    </div>
+                </div>
+                `;
+            });
+
+            // 11. Render Data to DOM
+            
+            // Render Print Header Info
+            document.getElementById('resName').innerText = name || 'Not specified';
+            document.getElementById('resAge').innerText = age;
+            document.getElementById('resGender').innerText = gender.charAt(0).toUpperCase() + gender.slice(1);
+            document.getElementById('resHeight').innerText = height;
+            document.getElementById('resWeight').innerText = weight;
+            document.getElementById('resTargetW').innerText = targetWeight;
+
+            document.getElementById('resBMI').innerText = bmi.toFixed(1);
+            document.getElementById('resBMICat').innerText = bmiCat;
+            document.getElementById('resBMICat').className = `text-xs font-medium mt-1 ${bmiColor}`;
+            
+            document.getElementById('resBMR').innerText = Math.round(bmr);
+            document.getElementById('resTDEE').innerText = Math.round(tdee);
+            document.getElementById('resTarget').innerText = Math.round(targetCals);
+            
+            document.getElementById('resDate').innerText = dateText;
+            document.getElementById('resPace').innerText = paceText;
+
+            document.getElementById('resDietDesc').innerText = dietName;
+            document.getElementById('pctC').innerText = pctC; document.getElementById('gramC').innerText = gramC;
+            document.getElementById('barC').style.width = pctC + '%';
+            document.getElementById('pctP').innerText = pctP; document.getElementById('gramP').innerText = gramP;
+            document.getElementById('barP').style.width = pctP + '%';
+            document.getElementById('pctF').innerText = pctF; document.getElementById('gramF').innerText = gramF;
+            document.getElementById('barF').style.width = pctF + '%';
+
+            document.getElementById('conditionSpecificAdvice').innerHTML = adviceHtml;
+            document.getElementById('mealPlanContainer').innerHTML = mealHtml;
+
+            // Warnings Render
+            const warnBox = document.getElementById('warningBox');
+            const warnList = document.getElementById('warningList');
+            warnList.innerHTML = "";
+            if(warnings.length > 0) {
+                warnings.forEach(w => {
+                    const li = document.createElement('li');
+                    li.innerText = w;
+                    warnList.appendChild(li);
+                });
+                warnBox.classList.remove('hidden');
+            } else {
+                warnBox.classList.add('hidden');
+            }
+
+            // Show Results
+            document.getElementById('resultsSection').classList.remove('hidden');
+            
+            // Scroll to results on mobile
+            if(window.innerWidth < 1024) {
+                document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Function to export as a standalone HTML file
+        function saveToFile() {
+            const nameInput = document.getElementById('name').value.trim();
+            const safeName = nameInput ? nameInput.replace(/[^a-z0-9]/gi, '_') : 'Patient';
+            const filename = `${safeName}_Nutrition_Plan.html`;
+            
+            // Clone the results section to manipulate for saving
+            const resultsContent = document.getElementById('resultsSection').cloneNode(true);
+            
+            // Remove the action bar from the saved file
+            const actionBar = resultsContent.querySelector('#actionBar');
+            if (actionBar) actionBar.remove();
+            
+            // Ensure the patient summary info is visible in the saved file
+            const printHeader = resultsContent.querySelector('#printPatientInfo');
+            if (printHeader) {
+                printHeader.classList.remove('hidden', 'print:block');
+                printHeader.classList.add('block');
+            }
+
+            // Create standalone HTML boilerplate
+            const template = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>${safeName} - Nutrition Plan</title>
+    <script src="https://cdn.tailwindcss.com"><\/script>
+    <script src="https://unpkg.com/lucide@latest"><\/script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; padding: 2rem; }</style>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto space-y-6">
+        ${resultsContent.innerHTML}
+    </div>
+    <script>lucide.createIcons();<\/script>
+</body>
+</html>`;
+
+            // Trigger File Download
+            const blob = new Blob([template], { type: "text/html" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // Enhanced Print Function for proper "Save as PDF" default naming
+        function printReport() {
+            const nameInput = document.getElementById('name').value.trim();
+            const safeName = nameInput ? nameInput : 'Patient';
+            
+            // Temporarily swap document title so PDF default filename uses patient name
+            const originalTitle = document.title;
+            document.title = `${safeName} - Nutrition Plan`;
+            
+            window.print();
+            
+            // Restore original title immediately after print dialog triggers
+            setTimeout(() => {
+                document.title = originalTitle;
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
